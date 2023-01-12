@@ -1,3 +1,3 @@
-# MSSC berr service
+# MSSC Beer service
 
 spring microservice example
