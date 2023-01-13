@@ -1,6 +1,5 @@
 package eric.springframework.msscbeerservice.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eric.springframework.msscbeerservice.web.model.BeerDto;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ class BeerControllerTest {
     void saveNewBeer() throws Exception {
         BeerDto beerDto = BeerDto.builder().build();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
-        mockMvc.perform(post("/api/v1/beer/")
+        mockMvc.perform(post("/api/v1/beer/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoJson))
                 .andExpect(status().isCreated());
