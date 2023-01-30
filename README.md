@@ -2,4 +2,4 @@
 
 # MSSC Beer service
 
-spring microservice example
+spring microservice 
