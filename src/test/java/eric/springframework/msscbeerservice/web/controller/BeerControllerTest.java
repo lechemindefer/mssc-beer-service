@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -67,5 +68,6 @@ class BeerControllerTest {
                 .price(new BigDecimal("2.99"))
                 .upc(12345667)
                 .build();
+
     }
 }
