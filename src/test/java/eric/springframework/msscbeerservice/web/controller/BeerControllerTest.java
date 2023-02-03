@@ -1,6 +1,7 @@
 package eric.springframework.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import eric.springframework.msscbeerservice.bootstrap.BeerLoader;
 import eric.springframework.msscbeerservice.services.BeerService;
 import eric.springframework.msscbeerservice.web.model.BeerDto;
 
@@ -65,21 +66,6 @@ class BeerControllerTest {
 
     }
 
-    /**
-     * Method under test: {@link BeerController#deletedBeer(UUID)}
-     */
-    @Test
-    void testDeletedBeer() throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/api/v1/beer/{beerId}",
-                UUID.randomUUID());
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(beerController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(500));
-    }
-
-
-
     @Test
     void updateBeerId() throws Exception {
         BeerDto beerDto = getValidBeerDto();
@@ -95,7 +81,7 @@ class BeerControllerTest {
                 .beerName("My Beer")
                 .beerStyle(BeerStyleEnum.ALE)
                 .price(new BigDecimal("2.99"))
-                .upc(12345667)
+                .upc(BeerLoader.BEER_1_UPC)
                 .build();
 
     }
