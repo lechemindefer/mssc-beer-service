@@ -1,6 +1,7 @@
 package eric.springframework.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import eric.springframework.msscbeerservice.services.BeerService;
 import eric.springframework.msscbeerservice.web.model.BeerDto;
 
 import eric.springframework.msscbeerservice.web.model.BeerStyleEnum;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -17,7 +19,16 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import org.springframework.test.web.servlet.ResultActions;
 
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,6 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(BeerController.class)
 class BeerControllerTest {
+    @MockBean
+    private BeerService beerService;
+
     @Autowired
     private BeerController beerController;
 
@@ -51,6 +65,21 @@ class BeerControllerTest {
 
     }
 
+    /**
+     * Method under test: {@link BeerController#deletedBeer(UUID)}
+     */
+    @Test
+    void testDeletedBeer() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/api/v1/beer/{beerId}",
+                UUID.randomUUID());
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(beerController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(500));
+    }
+
+
+
     @Test
     void updateBeerId() throws Exception {
         BeerDto beerDto = getValidBeerDto();
@@ -61,7 +90,7 @@ class BeerControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    BeerDto getValidBeerDto(){
+    BeerDto getValidBeerDto() {
         return BeerDto.builder()
                 .beerName("My Beer")
                 .beerStyle(BeerStyleEnum.ALE)
